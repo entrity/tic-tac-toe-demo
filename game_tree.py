@@ -27,17 +27,17 @@ def _minimax_recursive(state, depth, is_seeking_max):
 		free_cells = state.get_free_cells()
 		if len(free_cells) == 0:
 			return 0
-		# random.shuffle(free_cells)
+		random.shuffle(free_cells)
 		# Recurse
 		next_states = _get_next_states(state, free_cells, is_seeking_max)
-		for next_state in next_states: # todo delete
-			next_state.prev = state
+		# for next_state in next_states: # todo delete
+		# 	next_state.prev = state
 		scores = [_minimax_recursive(s, depth-1, not is_seeking_max) for s in next_states]
 		comparison_fn = max if is_seeking_max else min
 		# Get best
 		score, next_state, move = comparison_fn(list(zip(scores, next_states, free_cells)), key=lambda x: x[0]) # Remeber that each 'score' is a tuple of (score, choice)
-		state.next_state = next_state # todo delete
-		state.next_states = next_states # todo delete
+		# state.next_state = next_state # todo delete
+		# state.next_states = next_states # todo delete
 		state.move = move
 		if abs(score) > 999: score /= 2 # penalize slower victories
 		return score

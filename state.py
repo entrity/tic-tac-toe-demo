@@ -75,7 +75,10 @@ class State(object):
 	def set(self, cell, value):
 		if value not in [X, O]:
 			raise IllegalCellValueException()
-		self.cells[State.decode(cell)] = value
+		index = State.decode(cell)
+		if self.cells[index] is not BLANK:
+			raise CellOccupiedException()
+		self.cells[index] = value
 		self.is_pristine = False
 
 	def pretty_print(self):
@@ -106,6 +109,9 @@ class State(object):
 		# no winner
 		return BLANK
 
+	def is_terminal(self):
+		return BLANK not in self.cells or self.get_winner() is not BLANK
+
 	# Return an array of int to indicate unclaimed cells
 	def get_free_cells(self):
 		return [i for i,v in enumerate(self.cells) if v == BLANK]
@@ -125,6 +131,8 @@ class IllegalCellCodeException(Exception):
 class IllegalCellValueException(Exception):
 	pass
 class IllegalStoredValueException(Exception):
+	pass
+class CellOccupiedException(Exception):
 	pass
 
 if __name__ == '__main__':
