@@ -1,3 +1,16 @@
+# This file does not raise exceptions when tests fail. These tests were used
+# in an exploratory manner during development and can be used in the same
+# manner during maintenance. However, these tests could be modified to raise
+# exceptions on unexpected results. Be aware that there is some randomization
+# in what moves the computer takes when presented with multiple equally good
+# options, and that can affect the repeatability of some tests.
+
+# Modify the code at the bottom of this file to determine which of the test
+# functions get run.
+
+# Usage:
+# 	python3 test_game_tree.py
+
 from state import State, X, O, BLANK
 import game_tree
 

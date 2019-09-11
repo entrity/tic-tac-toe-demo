@@ -1,4 +1,3 @@
-import pdb
 import random, sys, math
 from state import State, X, O, BLANK
 
