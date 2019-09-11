@@ -17,11 +17,11 @@ class State(object):
 	@staticmethod
 	def decode_cell_code(cell_code):
 		if not isinstance(cell_code, str):
-			raise IllegalCellCodeException()
+			raise IllegalCellCodeException(cell_code)
 		if len(cell_code) != 2:
-			raise IllegalCellCodeException()
+			raise IllegalCellCodeException(cell_code)
 		if not CELL_CODE_PATTERN.match(cell_code):
-			raise IllegalCellCodeException()
+			raise IllegalCellCodeException(cell_code)
 		# `col` is {0,1,2}
 		col = ord(cell_code[0].lower()) - ord('a')
 		# `row` is {0,1,2}
@@ -37,14 +37,28 @@ class State(object):
 
 	@staticmethod
 	def decode(cell):
-		if isinstance(cell, tuple):
+		if isinstance(cell, int) and cell >= 0 and cell <= 8:
+			return cell
+		elif isinstance(cell, tuple):
 			index = State.decode_row_col(*cell)
-		else:
+		elif isinstance(cell, str):
 			index = State.decode_cell_code(cell)
+		else:
+			raise IllegalCellCodeException(cell)
 		return index
 
 	def __init__(self):
 		self.cells = [BLANK for i in range(9)]
+		self.is_pristine = True
+
+	def clone(self):
+		other = State()
+		other.cells = [value for value in self.cells]
+		other.is_pristine = self.is_pristine
+		return other
+
+	def get_is_pristine(self):
+		return self.is_pristine
 
 	# Return {'X', 'O', ''}
 	def get_char(self, cell):
@@ -62,6 +76,7 @@ class State(object):
 		if value not in [X, O]:
 			raise IllegalCellValueException()
 		self.cells[State.decode(cell)] = value
+		self.is_pristine = False
 
 	def pretty_print(self):
 		print('%2s  A   B   C' % (''))
@@ -71,6 +86,7 @@ class State(object):
 				(r+1, self.get_char((r,0)), self.get_char((r,1)), self.get_char((r,2))))
 			print('%2s+---+---+---+' % (''))
 
+	# Return {-1, 1, 0}
 	def get_winner(self):
 		# check verticals
 		for i in range(3):
@@ -90,6 +106,20 @@ class State(object):
 		# no winner
 		return BLANK
 
+	# Return an array of int to indicate unclaimed cells
+	def get_free_cells(self):
+		return [i for i,v in enumerate(self.cells) if v == BLANK]
+
+	def __repr__(self):
+		bldr = ''
+		bldr += ('%2s  A   B   C\n' % (''))
+		bldr += ('%2s+---+---+---+\n' % (''))
+		for r in range(3):
+			bldr += ('%d | %1s | %1s | %1s |\n' % \
+				(r+1, self.get_char((r,0)), self.get_char((r,1)), self.get_char((r,2))))
+			bldr += ('%2s+---+---+---+\n' % (''))
+		return bldr
+
 class IllegalCellCodeException(Exception):
 	pass
 class IllegalCellValueException(Exception):
@@ -100,14 +130,9 @@ class IllegalStoredValueException(Exception):
 if __name__ == '__main__':
 	state = State()
 	state.pretty_print()
-	print('winner', state.get_winner())
+	print(state.get_free_cells())
 	state.set('A3', X)
 	state.set('B1', O)
 	state.set('C2', X)
 	state.pretty_print()
-	print('winner', state.get_winner())
-	state.set('A1', X)
-	print('winner', state.get_winner())
-	state.set('A2', X)
-	print('winner', state.get_winner())
-	
+	print(state.get_free_cells())

@@ -1,4 +1,9 @@
-# This is just a file of unit tests
+# This is just a file of unit tests. It will raise
+# assertion errors if any tests fail.
+# 
+# Usage:
+# 	python test_state.py
+
 from state import State, X, O, BLANK
 
 def test_get_winner():
