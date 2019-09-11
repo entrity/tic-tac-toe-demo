@@ -37,7 +37,7 @@ Enter your move as a two-character identifier, staring with the letter and finis
 
 Because the search space for a game of tic-tac-toe is so small, I saved a bit of programming time by implementing the minimax algorithm without alpha-beta pruning or restrictions on search depth. The lack of pruning imposes a computational cost that can impose a wait on older machines, but I did not find that this inhibited gameplay on my development machine.
 
-You can set a limit on search depth by changing the `MAX_SEARCH_DEPTH` variable in `main.py`. If you think the performance merits the extra dev time, you can modify the minimax implementation in the `game_tree.py` file.
+If you think the performance merits the extra dev time, you can modify the minimax implementation to include pruning in the `game_tree.py` file. For much less investment, you can modify the `_minimax_recursive` function in the `game_tree.py` file to support a limit on the search depth. (If you do the latter, be sure to call the `calc_score` function because you will definitely need to evaluate some non-terminal game states.)
 
 ## Running the automated tests
 
