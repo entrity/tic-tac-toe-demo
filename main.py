@@ -7,6 +7,7 @@ from game_tree import minimax
 
 MAX_SEARCH_DEPTH = 9
 
+# Prompt the user to move and update the game state.
 def user_move(state, token):
 	try:
 		move = input('Where do you want to move? ')
@@ -19,11 +20,13 @@ def user_move(state, token):
 		sys.stderr.write('Illegal move. That cell is already occupied.\n')
 		return False
 
+# Run minimax for the computer and update the game state.
 def computer_move(state, token):
 	print('The computer is thinking. Please wait. (On my machine, this takes no more than 1 second.)')
 	move = minimax(state, MAX_SEARCH_DEPTH, False)
 	state.set(move, token)
 
+# Loop, letting the user and computer take turns, until the game terminates.
 def play_game(user):
 	s = State()
 	s.pretty_print()

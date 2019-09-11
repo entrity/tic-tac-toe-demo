@@ -1,6 +1,12 @@
+# This file holds the minimax implementation.
+
 import random, sys, math
 from state import State, X, O, BLANK
 
+# Return the move which the A.I. should take for the current state of the board.
+# @arg state should be an instance of state.State
+# @arg depth is the limit on the search depth. It is not supported at this time, however, because the search space is small enough to search in its entirety.
+# @arg is_seeking_max is True if the current player is X and False if the current player is O
 def minimax(state, depth, is_seeking_max):
 	if BLANK not in state.cells:
 		raise Exception('minimax should not be called on a terminal state')
@@ -15,6 +21,9 @@ def minimax(state, depth, is_seeking_max):
 		score = _minimax_recursive(state, depth, is_seeking_max)
 		return state.move
 
+# Return the most favourable score for the player who is indicated by the is_seeking_max argument.
+# This function also sets a field `move` on `state`
+# This should be called only by the `minimax` function.
 def _minimax_recursive(state, depth, is_seeking_max):
 	# Handle terminal state
 	winner = state.get_winner()
@@ -37,6 +46,8 @@ def _minimax_recursive(state, depth, is_seeking_max):
 		if abs(score) > 999: score /= 2 # penalize slower victories
 		return score
 
+# Create new states for all possible moves indicated by `free_cells`. These
+# will be used in our search of the game tree.
 def _get_next_states(state, free_cells, is_seeking_max):
 	cell_value = 1 if is_seeking_max else -1
 	next_states = [state.clone() for x in free_cells]
@@ -44,6 +55,9 @@ def _get_next_states(state, free_cells, is_seeking_max):
 		next_states[i].set(cell, cell_value)
 	return next_states
 
+# This is a heuristic to compute a value for a given state so that the most
+# favourable state among a selection of possible future states can easily be
+# identified.
 def calc_score(state):
 	working = 0
 	def worth(triplet):
