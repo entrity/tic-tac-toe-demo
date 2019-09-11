@@ -1,6 +1,6 @@
 # Tic-tac-toe
 
-Play the computer in a game of tic-tac-toe (a.k.a. 'noughts and crosses').
+Go head to head against the computer in a game of tic-tac-toe (a.k.a. 'noughts and crosses').
 
 ## Playing the game
 
@@ -35,7 +35,7 @@ Enter your move as a two-character identifier, staring with the letter and finis
 
 ## The AI
 
-Because the search space for a game of tic-tac-toe is so small, I saved a bit of programming time by implementing the minimax algorithm without alpha-beta pruning or restrictions on search depth. The lack of pruning imposes a computational cost that can slow play on older machines, but I did not find that this inhibited gameplay on my development machine.
+Because the search space for a game of tic-tac-toe is so small, I saved a bit of programming time by implementing the minimax algorithm without alpha-beta pruning or restrictions on search depth. The lack of pruning imposes a computational cost that can impose a wait on older machines, but I did not find that this inhibited gameplay on my development machine.
 
 You can set a limit on search depth by changing the `MAX_SEARCH_DEPTH` variable in `main.py`. If you think the performance merits the extra dev time, you can modify the minimax implementation in the `game_tree.py` file.
 
